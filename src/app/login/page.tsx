@@ -112,7 +112,7 @@ export default function Page() {
 
           <div className="mt-1 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link href="#" className="underline">
+            <Link href="/register" className="underline">
               Sign up
             </Link>
           </div>
