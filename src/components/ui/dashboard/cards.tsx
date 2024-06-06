@@ -9,7 +9,7 @@ import {
   BarsArrowUpIcon,
   BriefcaseIcon,
 } from '@heroicons/react/24/outline';
-import { getTotalIncome, getTotalExpense } from '../../../../utils/api';
+import { getTotalIncome, getTotalExpense, getTotalBalance, getTotalAccounts } from '../../../../utils/api';
 
 const iconMap = {
   income: BanknotesIcon,
@@ -23,14 +23,20 @@ const iconMap = {
 export default function CardWrapper({authToken}: {authToken: string}) {
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [totalAccounts, setTotalAccounts] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const income = await getTotalIncome(authToken);
         const expense = await getTotalExpense(authToken);
+        const balance = await getTotalBalance(authToken);
+        const accounts = await getTotalAccounts(authToken);
         setTotalIncome(income);
         setTotalExpense(expense);
+        setTotalBalance(balance);
+        setTotalAccounts(accounts);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -44,8 +50,8 @@ export default function CardWrapper({authToken}: {authToken: string}) {
       <Card title="Expense" value={totalExpense} type="expense" />
       <Card title="Borrowing" value={0} type="borrowing" />
       <Card title="Lending" value={0} type="lending"/>
-      <Card title="Accounts" value={0} type="accounts"/>
-      <Card title="Networth" value={0} type="networth"/>
+      <Card title="Accounts" value={totalAccounts} type="accounts"/>
+      <Card title="Networth" value={totalBalance} type="networth"/>
     </>
   );
 }

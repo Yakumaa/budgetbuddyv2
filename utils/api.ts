@@ -55,3 +55,31 @@ export const getTotalExpense = async (authToken: string) => {
     throw error;
   }
 };
+
+export const getTotalBalance = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/accounts/total-balance`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching total balance:', error);
+    throw error;
+  }
+}
+
+export const getTotalAccounts = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/accounts/total-accounts`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching total accounts:', error);
+    throw error;
+  }
+}
