@@ -7,11 +7,9 @@ import { CardsSkeleton } from "@/components/ui/skeletons";
 import { lusitana } from '@/components/ui/fonts';
 
 export default function Page() {
-  // const userId = 5
   const [authToken, setAuthToken] = useState('');
 
   useEffect(() => {
-    // Obtain the authentication token from the localstorage
     const token = localStorage.getItem('authToken');
     if (token) {
       setAuthToken(token);

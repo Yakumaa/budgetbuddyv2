@@ -28,6 +28,20 @@ export const register = async (username: string, email: string, password: string
   }
 };
 
+export const signOut = async ( authToken: string ) => {
+  try {
+    const response = await axios.post(`${apiUrl}/api/auth/logout`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error signing out:', error);
+    throw error;
+  }
+}
+
 export const getTotalIncome = async (authToken: string) => {
   try {
     const response = await axios.get(`${apiUrl}/transactions/total-income`, {
