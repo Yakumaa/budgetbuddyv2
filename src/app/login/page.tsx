@@ -31,6 +31,12 @@ export default function Page() {
     try{
       const response = await signIn(username, password)
       console.log('login successful:', response)
+
+      // Store the access token and userid in localstorage
+      const accessToken = response.accessToken;
+      console.log('accessToken:', accessToken);
+      localStorage.setItem('authToken', accessToken);
+
       router.push('/dashboard');
     } catch (error: any) { // Explicitly type 'error' as 'any'
       if (error.response?.status === 403) {

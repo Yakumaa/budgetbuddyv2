@@ -1,11 +1,11 @@
 import axios, { AxiosError } from 'axios';
 import { LoginInput, RegisterInput } from './validation';
 
-const apiUrl = 'http://localhost:5000/api/auth';
+const apiUrl = 'http://localhost:5000';
 
 export const signIn = async (username: string, password: string) => {
   try {
-    const response = await axios.post(`${apiUrl}/signin`, { userName: username, password });
+    const response = await axios.post(`${apiUrl}/api/auth/signin`, { userName: username, password });
     return response.data;
   } catch (error) {
     console.error('Error signing in:', error);
@@ -15,7 +15,7 @@ export const signIn = async (username: string, password: string) => {
 
 export const register = async (username: string, email: string, password: string) => {
   try {
-    const response = await axios.post<RegisterInput>(`${apiUrl}/signup`, {
+    const response = await axios.post<RegisterInput>(`${apiUrl}/api/auth/signup`, {
       email,
       userName: username,
       password,
@@ -24,6 +24,34 @@ export const register = async (username: string, email: string, password: string
     return response.data;
   } catch (error) {
     console.error('Error registering:', error);
+    throw error;
+  }
+};
+
+export const getTotalIncome = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/transactions/total-income`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching total income:', error);
+    throw error;
+  }
+};
+
+export const getTotalExpense = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/transactions/total-expense`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching total expense:', error);
     throw error;
   }
 };
