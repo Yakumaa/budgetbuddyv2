@@ -9,7 +9,15 @@ import {
   BarsArrowUpIcon,
   BriefcaseIcon,
 } from '@heroicons/react/24/outline';
-import { getTotalIncome, getTotalExpense, getTotalBalance, getTotalAccounts } from '../../../../utils/api';
+import { 
+  getTotalIncome, 
+  getTotalExpense, 
+  getTotalBalance, 
+  getTotalAccounts,
+  getTotalLending,
+  getTotalBorrowing
+} from '../../../../utils/api';
+import { set } from 'zod';
 
 const iconMap = {
   income: BanknotesIcon,
@@ -25,6 +33,8 @@ export default function CardWrapper({authToken}: {authToken: string}) {
   const [totalExpense, setTotalExpense] = useState(0);
   const [totalBalance, setTotalBalance] = useState(0);
   const [totalAccounts, setTotalAccounts] = useState(0);
+  const [totalLending, setTotalLending] = useState(0);
+  const [totalBorrowing, setTotalBorrowing] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,10 +43,14 @@ export default function CardWrapper({authToken}: {authToken: string}) {
         const expense = await getTotalExpense(authToken);
         const balance = await getTotalBalance(authToken);
         const accounts = await getTotalAccounts(authToken);
+        const lending = await getTotalLending(authToken);
+        const borrowing = await getTotalBorrowing(authToken);
         setTotalIncome(income);
         setTotalExpense(expense);
         setTotalBalance(balance);
         setTotalAccounts(accounts);
+        setTotalLending(lending);
+        setTotalBorrowing(borrowing);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -48,8 +62,8 @@ export default function CardWrapper({authToken}: {authToken: string}) {
     <>
       <Card title="Income" value={totalIncome} type="income" />
       <Card title="Expense" value={totalExpense} type="expense" />
-      <Card title="Borrowing" value={0} type="borrowing" />
-      <Card title="Lending" value={0} type="lending"/>
+      <Card title="Borrowing" value={totalBorrowing} type="borrowing" />
+      <Card title="Lending" value={totalLending} type="lending"/>
       <Card title="Accounts" value={totalAccounts} type="accounts"/>
       <Card title="Networth" value={totalBalance} type="networth"/>
     </>

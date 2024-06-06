@@ -83,3 +83,31 @@ export const getTotalAccounts = async (authToken: string) => {
     throw error;
   }
 }
+
+export const getTotalLending = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/loans/total-lending`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching total lending:', error);
+    throw error;
+  }
+}
+
+export const getTotalBorrowing = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/loans/total-borrowing`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching total borrowing:', error);
+    throw error;
+  }
+}
