@@ -6,6 +6,7 @@ import { AccountCategory } from '../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 
 const CreateAccountPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -32,7 +33,17 @@ const CreateAccountPage: React.FC = () => {
 
   return (
     <div>
-      <h1 className={`${lusitana.className} mb-4 text-xl font-bold md:text-2xl`}>Create Account</h1>
+      <Breadcrumbs
+        breadcrumbs={[
+          { label: 'Accounts', href: '/dashboard/account' },
+          {
+            label: 'Create Account',
+            href: '/dashboard/account/create',
+            active: true,
+          },
+        ]}
+      />
+      
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="name" className={`${lusitana.className} block text-gray-700 font-bold mb-2`}>
