@@ -18,7 +18,6 @@ import {
   getTotalLending,
   getTotalBorrowing
 } from '../../../../utils/api';
-import { set } from 'zod';
 
 const iconMap = {
   income: BanknotesIcon,
