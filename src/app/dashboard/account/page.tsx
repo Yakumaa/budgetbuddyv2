@@ -5,7 +5,8 @@ import { getTotalBalance, getAccounts, createAccount, updateAccount, deleteAccou
 import { AccountCategory, accountCategorySchema } from '../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
-import { BanknotesIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { BanknotesIcon, PlusIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 interface Account {
   account_id: number;
@@ -58,9 +59,19 @@ const AccountsPage: React.FC = () => {
 
   return (
     <div>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl font-bold`}>
-        Accounts
-      </h1>
+      <div className="mt-2 flex items-center justify-between gap-2 md:mt-2 mb-4">
+        <h1 className={`${lusitana.className} text-xl md:text-2xl font-bold`}>
+          Accounts
+        </h1>
+        <Link
+          href="/dashboard/account/create"
+          className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        >
+          <span className="hidden md:block">Create Account</span>{' '}
+          <PlusIcon className="h-5 md:ml-4" />
+        </Link>
+      </div>
+
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <Card title="Total Balance" value={totalBalance} type="networth" />
       </div>

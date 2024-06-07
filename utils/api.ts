@@ -157,6 +157,7 @@ export const createAccount = async (
         Authorization: `Bearer ${authToken}`,
       },
     });
+    console.log('response', response.data);
     return response.data;
   } catch (error) {
     console.error('Error creating account:', error);
