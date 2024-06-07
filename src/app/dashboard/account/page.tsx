@@ -58,18 +58,27 @@ const AccountsPage: React.FC = () => {
   const bankAccounts = accounts.filter((account) => account.category === 'BANK');
 
   return (
-    <div>
-      <div className="mt-2 flex items-center justify-between gap-2 md:mt-2 mb-4">
-        <h1 className={`${lusitana.className} text-xl md:text-2xl font-bold`}>
+    <main>
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <h1 className={`${lusitana.className} text-xl font-bold md:text-2xl`}>
           Accounts
         </h1>
-        <Link
-          href="/dashboard/account/create"
-          className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-        >
-          <span className="hidden md:block">Create Account</span>{' '}
-          <PlusIcon className="h-5 md:ml-4" />
-        </Link>
+        <div className="flex justify-end gap-4">    
+          <Link
+            href="/dashboard/account/transfer"
+            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            <span className="hidden md:block">Transfer Balance</span>{' '}
+            <PlusIcon className="h-5 md:ml-4" />
+          </Link>
+          <Link
+            href="/dashboard/account/create"
+            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            <span className="hidden md:block">Create Account</span>{' '}
+            <PlusIcon className="h-5 md:ml-4" />
+          </Link>
+        </div>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -96,7 +105,7 @@ const AccountsPage: React.FC = () => {
           <Card key={account.account_id} title={account.name} value={account.balance} type="accounts" />
         ))}
       </div>
-    </div>
+    </main>
   );
 };
 

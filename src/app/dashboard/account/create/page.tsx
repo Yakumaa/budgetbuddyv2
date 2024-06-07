@@ -6,12 +6,14 @@ import { AccountCategory } from '../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 
 const CreateAccountPage: React.FC = () => {
   const [name, setName] = useState('');
   const [balance, setBalance] = useState(0);
   const [category, setCategory] = useState<AccountCategory>('BANK');
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ const CreateAccountPage: React.FC = () => {
         await createAccount(authToken, name, balance, category);
         console.log('Account created successfully');
         // Additional logic or redirection after account creation
+        router.push('/dashboard/account')
       } else {
         console.error('Authentication token not found in localStorage');
       }
