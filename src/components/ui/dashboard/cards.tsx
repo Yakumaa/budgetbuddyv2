@@ -18,9 +18,11 @@ import {
   getTotalBalance, 
   getTotalAccounts,
   getTotalLending,
-  getTotalBorrowing
+  getTotalBorrowing,
+  deleteAccount
 } from '../../../../utils/api';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const iconMap = {
   income: BanknotesIcon,
@@ -87,6 +89,27 @@ export function Card({
   accountId?: number;
 }) {
   const Icon = iconMap[type];
+  const router = useRouter();
+  
+  const handleDeleteAccount = async (accountId?: number) => {
+    if (accountId === undefined) {
+      console.error('Account ID is undefined');
+      return;
+    }
+    try {
+      const authToken = localStorage.getItem('authToken');
+
+      if (authToken) {
+        await deleteAccount(authToken, accountId);
+        console.log('Account deleted successfully');
+        router.refresh(); // Refresh the current page after successful deletion
+      } else {
+        console.error('Authentication token not found in localStorage');
+      }
+    } catch (error) {
+      console.error('Error deleting account:', error);
+    }
+  };
 
   return (
     <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
@@ -98,7 +121,10 @@ export function Card({
             <Link href={`/dashboard/account/${accountId}/edit`} passHref>
               <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
             </Link>
-            <TrashIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+            <TrashIcon
+              className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
+              onClick={() => handleDeleteAccount(accountId)}
+            />          
           </div>
         )}
       </div>

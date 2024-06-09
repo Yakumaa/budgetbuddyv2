@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { getAccounts, updateAccount } from '../../../../../../utils/api';
+import { deleteAccount, getAccounts, updateAccount } from '../../../../../../utils/api';
 import { AccountCategory } from '../../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import Link from 'next/link';
