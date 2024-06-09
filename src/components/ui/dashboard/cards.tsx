@@ -90,6 +90,7 @@ export function Card({
   title,
   value,
   type,
+  date,
   isAccountsPage = false,
   accountId,
   handleDeleteAccount,
@@ -97,6 +98,7 @@ export function Card({
   title: string;
   value: number | string;
   type: 'income' | 'expense' | 'borrowing' | 'lending' | 'accounts' | 'networth';
+  date?: string;
   isAccountsPage?: boolean;
   accountId?: number;
   handleDeleteAccount?: (accountId?: number) => Promise<void>;
@@ -108,6 +110,7 @@ export function Card({
       <div className="flex p-4">
         {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
         <h3 className="ml-2 text-sm font-medium">{title}</h3>
+        {date && <p className="ml-auto text-sm text-gray-500">{date}</p>}
         {isAccountsPage && accountId !== undefined && (
           <div className="ml-auto flex space-x-2">
             <Link href={`/dashboard/account/${accountId}/edit`} passHref>

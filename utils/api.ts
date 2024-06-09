@@ -225,3 +225,17 @@ export const transferBalance = async (
     throw error;
   }
 }
+
+export const getTransactions = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/transactions`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    throw error;
+  }
+}
