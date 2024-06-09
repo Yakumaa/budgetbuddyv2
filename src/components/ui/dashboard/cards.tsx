@@ -11,6 +11,17 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { lusitana } from '@/components/ui/fonts';
 import { 
   getTotalIncome, 
@@ -103,10 +114,27 @@ export function Card({
               <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
             </Link>
             {handleDeleteAccount && (
-              <TrashIcon
-                className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
-                onClick={() => handleDeleteAccount(accountId)}
-              />
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <TrashIcon
+                  className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
+                  />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete your
+                      account and remove your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDeleteAccount(accountId)}>Delete</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              
             )}
           </div>
         )}
