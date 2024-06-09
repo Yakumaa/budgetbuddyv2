@@ -81,50 +81,33 @@ export function Card({
   type,
   isAccountsPage = false,
   accountId,
+  handleDeleteAccount,
 }: {
   title: string;
   value: number | string;
   type: 'income' | 'expense' | 'borrowing' | 'lending' | 'accounts' | 'networth';
   isAccountsPage?: boolean;
   accountId?: number;
+  handleDeleteAccount?: (accountId?: number) => Promise<void>;
 }) {
   const Icon = iconMap[type];
-  const router = useRouter();
-  
-  const handleDeleteAccount = async (accountId?: number) => {
-    if (accountId === undefined) {
-      console.error('Account ID is undefined');
-      return;
-    }
-    try {
-      const authToken = localStorage.getItem('authToken');
-
-      if (authToken) {
-        await deleteAccount(authToken, accountId);
-        console.log('Account deleted successfully');
-        router.refresh(); // Refresh the current page after successful deletion
-      } else {
-        console.error('Authentication token not found in localStorage');
-      }
-    } catch (error) {
-      console.error('Error deleting account:', error);
-    }
-  };
 
   return (
     <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
       <div className="flex p-4">
         {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
         <h3 className="ml-2 text-sm font-medium">{title}</h3>
-        {isAccountsPage && (
+        {isAccountsPage && accountId !== undefined && (
           <div className="ml-auto flex space-x-2">
             <Link href={`/dashboard/account/${accountId}/edit`} passHref>
               <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
             </Link>
-            <TrashIcon
-              className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
-              onClick={() => handleDeleteAccount(accountId)}
-            />          
+            {handleDeleteAccount && (
+              <TrashIcon
+                className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
+                onClick={() => handleDeleteAccount(accountId)}
+              />
+            )}
           </div>
         )}
       </div>

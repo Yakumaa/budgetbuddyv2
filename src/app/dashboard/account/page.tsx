@@ -25,26 +25,46 @@ const AccountsPage: React.FC = () => {
   const [accountsData, setAccountsData] = useState<AccountsData | null>(null);
   const [totalBalance, setTotalBalance] = useState<number | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const authToken = localStorage.getItem('authToken');
+  const fetchAccountsData = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken');
 
-        if (authToken) {
-          const accountsResponse = await getAccounts(authToken);
-          setAccountsData(accountsResponse);
-    
-          const totalBalanceResponse = await getTotalBalance(authToken);
-          setTotalBalance(totalBalanceResponse);
-        } else {
-          console.error('Authentication token not found in localStorage');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      if (authToken) {
+        const accountsResponse = await getAccounts(authToken);
+        setAccountsData(accountsResponse);
+
+        const totalBalanceResponse = await getTotalBalance(authToken);
+        setTotalBalance(totalBalanceResponse);
+      } else {
+        console.error('Authentication token not found in localStorage');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
-    fetchData();
+  const handleDeleteAccount = async (accountId?: number) => {
+    if (accountId === undefined) {
+      console.error('Account ID is undefined');
+      return;
+    }
+    try {
+      const authToken = localStorage.getItem('authToken');
+
+      if (authToken) {
+        await deleteAccount(authToken, accountId);
+        console.log('Account deleted successfully');
+        fetchAccountsData(); // Call the fetchAccountsData function to update the component state
+      } else {
+        console.error('Authentication token not found in localStorage');
+      }
+    } catch (error) {
+      console.error('Error deleting account:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAccountsData();
   }, []);
 
   if (!accountsData || totalBalance === null) {
@@ -95,14 +115,14 @@ const AccountsPage: React.FC = () => {
       <h2 className={`${lusitana.className} text-2xl mt-8 mb-4`}>Mobile Wallet Accounts</h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {mobileWalletAccounts.map((account) => (
-        <Card key={account.account_id} title={account.name} value={account.balance} type="accounts" isAccountsPage={true} accountId={account.account_id}/>
+        <Card key={account.account_id} title={account.name} value={account.balance} type="accounts" isAccountsPage={true} accountId={account.account_id} handleDeleteAccount={handleDeleteAccount}/>
       ))}
       </div>
 
       <h2 className={`${lusitana.className} text-2xl mt-8 mb-4`}>Bank Accounts</h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {bankAccounts.map((account) => (
-          <Card key={account.account_id} title={account.name} value={account.balance} type="accounts" isAccountsPage={true} accountId={account.account_id}/>
+          <Card key={account.account_id} title={account.name} value={account.balance} type="accounts" isAccountsPage={true} accountId={account.account_id} handleDeleteAccount={handleDeleteAccount}/>
         ))}
       </div>
     </main>
