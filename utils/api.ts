@@ -239,3 +239,32 @@ export const getTransactions = async (authToken: string) => {
     throw error;
   }
 }
+
+export const createTransaction = async (
+  authToken: string,
+  type: 'income' | 'expense',
+  amount: number,
+  category: string,
+  description: string,
+  date: string,
+  account_transactions: { account_id: number }[]
+) => {
+  try {
+    const response = await axios.post(`${apiUrl}/transactions`, {
+      type,
+      amount,
+      category,
+      description,
+      date,
+      account_transactions,
+    }, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating transaction:', error);
+    throw error;
+  }
+}

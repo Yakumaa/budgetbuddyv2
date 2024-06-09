@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { getTotalIncome, getTotalExpense, getTransactions } from '../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
+import Link from 'next/link';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 interface Transaction {
   transaction_id: number;
@@ -60,6 +62,22 @@ const TransactionsPage: React.FC = () => {
         <h1 className={`${lusitana.className} text-xl font-bold md:text-2xl`}>
           Transactions
         </h1>
+        <div className="flex justify-end gap-4">
+          <Link
+            href="/dashboard/transaction/create?type=income"
+            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            <span className="hidden md:block">Add Income</span>{' '}
+            <PlusIcon className="h-5 md:ml-4" />
+          </Link>
+          <Link
+            href="/dashboard/transaction/create?type=expense"
+            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            <span className="hidden md:block">Add Expense</span>{' '}
+            <PlusIcon className="h-5 md:ml-4" />
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row mt-8">

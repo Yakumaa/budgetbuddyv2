@@ -17,3 +17,6 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 
 export const accountCategorySchema = z.enum(['CASH', 'BANK', 'MOBILE_WALLET']);
 export type AccountCategory = z.infer<typeof accountCategorySchema>;
+
+export const transactionTypeSchema = z.enum(['income', 'expense']);
+export type TransactionType = z.infer<typeof transactionTypeSchema>;
