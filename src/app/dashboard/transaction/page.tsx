@@ -9,6 +9,7 @@ interface Transaction {
   transaction_id: number;
   type: 'income' | 'expense';
   amount: number;
+  category: string;
   description: string;
   date: string;
 }
@@ -73,14 +74,16 @@ const TransactionsPage: React.FC = () => {
       <div className="flex flex-col md:flex-row mt-8">
         <div className="md:w-1/2">
           <h2 className={`${lusitana.className} text-2xl mb-4 m-6`}>Income</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1 m-6">
+          <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-1 m-6">
             {incomeTransactions.map((transaction) => (
               <Card
                 key={transaction.transaction_id}
-                title={transaction.description}
+                title={transaction.category}
                 value={transaction.amount}
                 type={transaction.type}
                 date={transaction.date}
+                isTransactionsPage={true} 
+                transactionId={transaction.transaction_id}
               />
             ))}
           </div>
@@ -88,7 +91,7 @@ const TransactionsPage: React.FC = () => {
 
         <div className="md:w-1/2 mt-8 md:mt-0">
           <h2 className={`${lusitana.className} text-2xl mb-4 m-6`}>Expense</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1 m-6">
+          <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-1 m-6">
             {expenseTransactions.map((transaction) => (
               <Card
                 key={transaction.transaction_id}
@@ -96,6 +99,8 @@ const TransactionsPage: React.FC = () => {
                 value={transaction.amount}
                 type={transaction.type}
                 date={transaction.date}
+                isTransactionsPage={true} 
+                transactionId={transaction.transaction_id}
               />
             ))}
           </div>

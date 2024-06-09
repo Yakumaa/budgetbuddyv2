@@ -92,7 +92,9 @@ export function Card({
   type,
   date,
   isAccountsPage = false,
+  isTransactionsPage = false,
   accountId,
+  transactionId,
   handleDeleteAccount,
 }: {
   title: string;
@@ -100,7 +102,9 @@ export function Card({
   type: 'income' | 'expense' | 'borrowing' | 'lending' | 'accounts' | 'networth';
   date?: string;
   isAccountsPage?: boolean;
+  isTransactionsPage?: boolean;
   accountId?: number;
+  transactionId?: number;
   handleDeleteAccount?: (accountId?: number) => Promise<void>;
 }) {
   const Icon = iconMap[type];
@@ -109,8 +113,8 @@ export function Card({
     <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
       <div className="flex p-4">
         {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
-        <h3 className="ml-2 text-sm font-medium">{title}</h3>
-        {date && <p className="ml-auto text-sm text-gray-500">{date}</p>}
+        <h3 className="ml-2 text-sm font-medium">{title}</h3>      
+        
         {isAccountsPage && accountId !== undefined && (
           <div className="ml-auto flex space-x-2">
             <Link href={`/dashboard/account/${accountId}/edit`} passHref>
@@ -141,6 +145,35 @@ export function Card({
             )}
           </div>
         )}
+
+        {isTransactionsPage && transactionId !== undefined && (
+          <div className="ml-auto flex space-x-2">
+            <Link href={`/dashboard/transaction/${transactionId}/edit`} passHref>
+              <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+            </Link>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <TrashIcon
+                  className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
+                />
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your
+                    transaction and remove your data from our servers.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction>Delete</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        )}
+
       </div>
       <p
         className={`${lusitana.className}
@@ -148,6 +181,7 @@ export function Card({
       >
         {value}
       </p>
+      {date && <p className="ml-auto text-sm text-gray-500">{date}</p>}
     </div>
   );
 }
