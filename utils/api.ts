@@ -268,3 +268,47 @@ export const createTransaction = async (
     throw error;
   }
 }
+
+export const updateTransaction = async (
+  authToken: string,
+  transactionId: number,
+  type: 'income' | 'expense',
+  amount: number,
+  category: string,
+  description: string,
+  date: string,
+  account_transactions: { account_id: number }[]
+) => {
+  try {
+    const response = await axios.put(`${apiUrl}/transactions/${transactionId}`, {
+      type,
+      amount,
+      category,
+      description,
+      date,
+      account_transactions,
+    }, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating transaction:', error);
+    throw error;
+  }
+}
+
+export const deleteTransaction = async (authToken: string, transactionId: number) => {
+  try {
+    const response = await axios.delete(`${apiUrl}/transactions/${transactionId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    throw error;
+  }
+}

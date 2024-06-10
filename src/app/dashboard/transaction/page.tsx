@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import { getTotalIncome, getTotalExpense, getTransactions } from '../../../../utils/api';
+import { getTotalIncome, getTotalExpense, getTransactions, deleteTransaction } from '../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
 import Link from 'next/link';
@@ -26,35 +26,63 @@ const TransactionsPage: React.FC = () => {
   const [totalIncome, setTotalIncome] = useState<number>(0);
   const [totalExpense, setTotalExpense] = useState<number>(0);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const authToken = localStorage.getItem('authToken');
+  const fetchTransactionsData = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken');
 
-        if (authToken) {
-          const incomeResponse = await getTotalIncome(authToken);
-          setTotalIncome(incomeResponse);
+      if (authToken) {
+        const incomeResponse = await getTotalIncome(authToken);
+        setTotalIncome(incomeResponse);
 
-          const expenseResponse = await getTotalExpense(authToken);
-          setTotalExpense(expenseResponse);
+        const expenseResponse = await getTotalExpense(authToken);
+        setTotalExpense(expenseResponse);
 
-          const transactionsResponse = await getTransactions(authToken);
-          setTransactionsData(transactionsResponse);
-        } else {
-          console.error('Authentication token not found in localStorage');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+        const transactionsResponse = await getTransactions(authToken);
+        setTransactionsData(transactionsResponse);
+      } else {
+        console.error('Authentication token not found in localStorage');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
-    fetchData();
+  const handleDeleteTransaction = async (transactionId?: number) => {
+    if (transactionId === undefined) {
+      console.error('Transaction ID is undefined');
+      return;
+    }
+    try{
+      const authToken = localStorage.getItem('authToken');
+
+      if (authToken) {
+        await deleteTransaction(authToken, transactionId);
+        console.log('Transaction deleted successfully');
+        fetchTransactionsData();
+      } else {
+        console.error('Authentication token not found in localStorage');
+      }
+    } catch (error){
+      console.error('Error deleting transaction:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactionsData()
   }, []);
 
   const transactions = transactionsData?.transactions || [];
 
   const incomeTransactions = transactions.filter((transaction) => transaction.type === 'income');
   const expenseTransactions = transactions.filter((transaction) => transaction.type === 'expense');
+
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   return (
     <main>
@@ -99,9 +127,10 @@ const TransactionsPage: React.FC = () => {
                 title={transaction.category}
                 value={transaction.amount}
                 type={transaction.type}
-                date={transaction.date}
+                date={formatDate(transaction.date)}
                 isTransactionsPage={true} 
                 transactionId={transaction.transaction_id}
+                handleDeleteTransaction={handleDeleteTransaction}
               />
             ))}
           </div>
@@ -116,9 +145,10 @@ const TransactionsPage: React.FC = () => {
                 title={transaction.description}
                 value={transaction.amount}
                 type={transaction.type}
-                date={transaction.date}
+                date={formatDate(transaction.date)}
                 isTransactionsPage={true} 
                 transactionId={transaction.transaction_id}
+                handleDeleteTransaction={handleDeleteTransaction}
               />
             ))}
           </div>

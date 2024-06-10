@@ -96,6 +96,7 @@ export function Card({
   accountId,
   transactionId,
   handleDeleteAccount,
+  handleDeleteTransaction,
 }: {
   title: string;
   value: number | string;
@@ -106,6 +107,7 @@ export function Card({
   accountId?: number;
   transactionId?: number;
   handleDeleteAccount?: (accountId?: number) => Promise<void>;
+  handleDeleteTransaction?: (transactionId?: number) => Promise<void>;
 }) {
   const Icon = iconMap[type];
 
@@ -151,26 +153,29 @@ export function Card({
             <Link href={`/dashboard/transaction/${transactionId}/edit`} passHref>
               <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
             </Link>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <TrashIcon
+            {handleDeleteTransaction && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <TrashIcon
                   className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
-                />
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete your
-                    transaction and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction>Delete</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                  />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete this
+                      transaction and remove the data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDeleteTransaction(transactionId)}>Delete</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              
+            )}
           </div>
         )}
 
