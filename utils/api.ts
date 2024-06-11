@@ -327,3 +327,39 @@ export const getLoans = async (authToken: string) => {
   }
 }
 
+export const createLoan = async (
+  authToken: string,
+  amount: number,
+  loanType: 'borrow' | 'lend',
+  counterpart: string,
+  interestRate: number,
+  repaymentSchedule: string,
+  startDate: string,
+  endDate: string,
+  accountTransactions: { account_id: number }[]
+) => {
+  try {
+    const accountIds = accountTransactions.map(({ account_id }) => account_id);
+    const response = await axios.post(`${apiUrl}/loans`,
+      {
+        amount,
+        loanType,
+        counterpart,
+        interest_rate: interestRate,
+        repayment_schedule: repaymentSchedule,
+        start_date: startDate,
+        end_date: endDate,
+        account_id: accountIds.length > 0 ? accountIds[0] : null, // Send the first account_id or null
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error creating loan:', error);
+    throw error;
+  }
+}

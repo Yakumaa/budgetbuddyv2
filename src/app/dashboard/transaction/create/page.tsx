@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import { createTransaction } from '../../../../../utils/api';
 import { TransactionType } from '../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
