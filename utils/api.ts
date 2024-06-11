@@ -312,3 +312,18 @@ export const deleteTransaction = async (authToken: string, transactionId: number
     throw error;
   }
 }
+
+export const getLoans = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/loans`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching loans:', error);
+    throw error;
+  }
+}
+
