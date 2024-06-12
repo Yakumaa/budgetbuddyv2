@@ -93,10 +93,13 @@ export function Card({
   date,
   isAccountsPage = false,
   isTransactionsPage = false,
+  isLoansPage = false,
   accountId,
   transactionId,
+  loanId,
   handleDeleteAccount,
   handleDeleteTransaction,
+  handleDeleteLoan
 }: {
   title: string;
   value: number | string;
@@ -104,10 +107,13 @@ export function Card({
   date?: string;
   isAccountsPage?: boolean;
   isTransactionsPage?: boolean;
+  isLoansPage?: boolean;
   accountId?: number;
   transactionId?: number;
+  loanId?: number;
   handleDeleteAccount?: (accountId?: number) => Promise<void>;
   handleDeleteTransaction?: (transactionId?: number) => Promise<void>;
+  handleDeleteLoan?: (loanId?: number) => Promise<void>;
 }) {
   const Icon = iconMap[type];
 
@@ -171,6 +177,37 @@ export function Card({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={() => handleDeleteTransaction(transactionId)}>Delete</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              
+            )}
+          </div>
+        )}
+
+        {isLoansPage && loanId !== undefined && (
+          <div className="ml-auto flex space-x-2">
+            <Link href={`/dashboard/loan/${loanId}/edit`} passHref>
+              <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+            </Link>
+            {handleDeleteLoan && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <TrashIcon
+                  className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
+                  />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete this
+                      loan and remove the data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDeleteLoan(loanId)}>Delete</AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

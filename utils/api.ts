@@ -363,3 +363,69 @@ export const createLoan = async (
     throw error;
   }
 }
+
+export const getLoan = async (authToken: string, loanId: number) => {
+  try {
+    const response = await axios.get(`${apiUrl}/loans/${loanId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching loan:', error);
+    throw error;
+  }
+}
+
+export const updateLoan = async (
+  authToken: string,
+  loanId: number,
+  amount: number,
+  loanType: 'borrow' | 'lend',
+  counterpart: string,
+  interestRate: number,
+  repaymentSchedule: string,
+  startDate: string,
+  endDate: string,
+  accountTransactions: { account_id: number }[]
+) => {
+  try {
+    const accountIds = accountTransactions.map(({ account_id }) => account_id);
+    const response = await axios.put(`${apiUrl}/loans/${loanId}`,
+      {
+        amount,
+        loanType,
+        counterpart,
+        interest_rate: interestRate,
+        repayment_schedule: repaymentSchedule,
+        start_date: startDate,
+        end_date: endDate,
+        account_id: accountIds.length > 0 ? accountIds[0] : null, // Send the first account_id or null
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error updating loan:', error);
+    throw error;
+  }
+}
+
+export const deleteLoan = async (authToken: string, loanId: number) => {
+  try {
+    const response = await axios.delete(`${apiUrl}/loans/${loanId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting loan:', error);
+    throw error;
+  }
+}

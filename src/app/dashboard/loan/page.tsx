@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getLoans } from '../../../../utils/api';
+import { deleteLoan, getLoans } from '../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
 import Link from 'next/link';
@@ -35,6 +35,26 @@ const LoansPage: React.FC = () => {
       console.error('Error fetching loans:', error);
     }
   };
+
+  const handleDeleteLoan = async (loanId?: number) => {
+    if (loanId === undefined) {
+      console.error('Loan ID is undefined');
+      return;
+    }
+    try {
+      const authToken = localStorage.getItem('authToken');
+
+      if (authToken) {
+        await deleteLoan(authToken, loanId);
+        console.log('Loan deleted successfully');
+        fetchLoans();
+      } else {
+        console.error('Authentication token not found in localStorage');
+      }
+    } catch (error) {
+      console.error('Error deleting loan:', error);
+    }
+  }
 
   useEffect(() => {
     fetchLoans();
@@ -89,6 +109,9 @@ const LoansPage: React.FC = () => {
               value={loan.amount}
               type={'borrowing'}
               date={formatDate(loan.start_date)}
+              isLoansPage={true}
+              loanId={loan.loan_id}
+              handleDeleteLoan={handleDeleteLoan}
               />
             ))}
           </div>
@@ -104,6 +127,9 @@ const LoansPage: React.FC = () => {
               value={loan.amount}
               type={'lending'}
               date={formatDate(loan.start_date)}
+              isLoansPage={true}
+              loanId={loan.loan_id}
+              handleDeleteLoan={handleDeleteLoan}
               />
             ))}
           </div>
