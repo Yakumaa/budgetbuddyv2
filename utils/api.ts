@@ -127,6 +127,20 @@ export const getTotalBorrowing = async (authToken: string) => {
   }
 }
 
+export const getTotalAssets = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/assets/total-asset`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching total assets:', error);
+    throw error;
+  }
+}
+
 export const getAccounts = async (authToken: string) => {
   try {
     const response = await axios.get(`${apiUrl}/accounts`, {
@@ -426,6 +440,85 @@ export const deleteLoan = async (authToken: string, loanId: number) => {
     return response.data;
   } catch (error) {
     console.error('Error deleting loan:', error);
+    throw error;
+  }
+}
+
+export const getAssets = async (authToken: string) => {
+  try {
+    const response = await axios.get(`${apiUrl}/assets`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching assets:', error);
+    throw error;
+  }
+}
+
+export const createAsset = async (
+  authToken: string,
+  name: string,
+  value: number,
+  purchaseDate: string,
+  description: string | null
+) => {
+  try {
+    const response = await axios.post(`${apiUrl}/assets`, {
+      name,
+      value,
+      purchase_date: purchaseDate,
+      description,
+    }, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating asset:', error);
+    throw error;
+  }
+}
+
+export const updateAsset = async (
+  authToken: string,
+  assetId: number,
+  name: string,
+  value: number,
+  purchaseDate: string,
+  description: string | null
+) => {
+  try {
+    const response = await axios.put(`${apiUrl}/assets/${assetId}`, {
+      name,
+      value,
+      purchase_date: purchaseDate,
+      description,
+    }, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating asset:', error);
+    throw error;
+  }
+}
+
+export const deleteAsset = async (authToken: string, assetId: number) => {
+  try {
+    const response = await axios.delete(`${apiUrl}/assets/${assetId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting asset:', error);
     throw error;
   }
 }

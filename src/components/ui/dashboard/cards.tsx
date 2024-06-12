@@ -8,6 +8,7 @@ import {
   BarsArrowDownIcon,
   BarsArrowUpIcon,
   BriefcaseIcon,
+  HomeModernIcon,
   PencilSquareIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
@@ -30,7 +31,7 @@ import {
   getTotalAccounts,
   getTotalLending,
   getTotalBorrowing,
-  deleteAccount
+  getTotalAssets
 } from '../../../../utils/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -41,7 +42,8 @@ const iconMap = {
   borrowing: BarsArrowDownIcon,
   lending: BarsArrowUpIcon,
   accounts: UserGroupIcon,
-  networth: BriefcaseIcon
+  networth: BriefcaseIcon,
+  asset: HomeModernIcon,
 };
 
 export default function CardWrapper({authToken}: {authToken: string}) {
@@ -51,6 +53,7 @@ export default function CardWrapper({authToken}: {authToken: string}) {
   const [totalAccounts, setTotalAccounts] = useState(0);
   const [totalLending, setTotalLending] = useState(0);
   const [totalBorrowing, setTotalBorrowing] = useState(0);
+  const [totalAsset, setTotalAsset] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,12 +64,14 @@ export default function CardWrapper({authToken}: {authToken: string}) {
         const accounts = await getTotalAccounts(authToken);
         const lending = await getTotalLending(authToken);
         const borrowing = await getTotalBorrowing(authToken);
+        const asset = await getTotalAssets(authToken);
         setTotalIncome(income);
         setTotalExpense(expense);
         setTotalBalance(balance);
         setTotalAccounts(accounts);
         setTotalLending(lending);
         setTotalBorrowing(borrowing);
+        setTotalAsset(asset);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -82,6 +87,7 @@ export default function CardWrapper({authToken}: {authToken: string}) {
       <Card title="Lending" value={totalLending} type="lending"/>
       <Card title="Accounts" value={totalAccounts} type="accounts"/>
       <Card title="Networth" value={totalBalance} type="networth"/>
+      <Card title="Assets" value={totalAsset} type="asset"/>
     </>
   );
 }
@@ -94,26 +100,32 @@ export function Card({
   isAccountsPage = false,
   isTransactionsPage = false,
   isLoansPage = false,
+  isAssetsPage = false,
   accountId,
   transactionId,
   loanId,
+  assetId,
   handleDeleteAccount,
   handleDeleteTransaction,
-  handleDeleteLoan
+  handleDeleteLoan,
+  handleDeleteAsset
 }: {
   title: string;
   value: number | string;
-  type: 'income' | 'expense' | 'borrowing' | 'lending' | 'accounts' | 'networth';
+  type: 'income' | 'expense' | 'borrowing' | 'lending' | 'accounts' | 'networth' | 'asset';
   date?: string;
   isAccountsPage?: boolean;
   isTransactionsPage?: boolean;
   isLoansPage?: boolean;
+  isAssetsPage?: boolean;
   accountId?: number;
   transactionId?: number;
   loanId?: number;
+  assetId?: number;
   handleDeleteAccount?: (accountId?: number) => Promise<void>;
   handleDeleteTransaction?: (transactionId?: number) => Promise<void>;
   handleDeleteLoan?: (loanId?: number) => Promise<void>;
+  handleDeleteAsset?: (assetId?: number) => Promise<void>;
 }) {
   const Icon = iconMap[type];
 
@@ -208,6 +220,37 @@ export function Card({
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={() => handleDeleteLoan(loanId)}>Delete</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              
+            )}
+          </div>
+        )}
+
+        {isAssetsPage && assetId !== undefined && (
+          <div className="ml-auto flex space-x-2">
+            <Link href={`/dashboard/asset/${assetId}/edit`} passHref>
+              <PencilSquareIcon className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+            </Link>
+            {handleDeleteAsset && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <TrashIcon
+                  className="h-5 w-5 text-gray-500 hover:text-gray-700 cursor-pointer"
+                  />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete this
+                      asset and remove the data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDeleteAsset(assetId)}>Delete</AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
