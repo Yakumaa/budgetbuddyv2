@@ -34,7 +34,10 @@ export default function Page() {
 
       // Store the access token and userid in localstorage
       const accessToken = response.accessToken;
+      const userId = response.userId;
       console.log('accessToken:', accessToken);
+      console.log('userId:', userId);
+      localStorage.setItem('userId', userId);
       localStorage.setItem('authToken', accessToken);
 
       router.push('/dashboard');
@@ -46,28 +49,6 @@ export default function Page() {
       }
       console.error('login error:', error)
     }
-    // try {
-    //   const input: LoginInput = { username, password };
-    //   const validatedData = await loginSchema.parseAsync(input);
-  
-    //   const { username, password } = validatedData;
-  
-    //   try {
-    //     const response = await signIn(username, password);
-    //     console.log('Login successful:', response);
-    //     router.push('/dashboard');
-    //   } catch (error: any) {
-    //     if (error.response?.status === 403) {
-    //       setError({ general: 'Invalid username or password' });
-    //     } else {
-    //       setError({ general: 'An error occurred. Please try again.' });
-    //     }
-    //     console.error('Login error:', error);
-    //   }
-    // } catch (err: any) {
-    //   const error = err.formErrors.fieldErrors;
-    //   setError(error);
-    // }
   }
 
   return (

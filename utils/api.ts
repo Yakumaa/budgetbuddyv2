@@ -522,3 +522,105 @@ export const deleteAsset = async (authToken: string, assetId: number) => {
     throw error;
   }
 }
+
+export const getUsers = async (authToken: string) => {
+  try{
+    const response = await axios.get(`${apiUrl}/users/`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error;
+  }
+}
+
+export const getUser = async (authToken: string, userId: number) => {
+  try {
+    const response = await axios.get(`${apiUrl}/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+}
+
+export const updateUser = async (
+  authToken: string,
+  userId: number,
+  username: string,
+  email: string,
+) => {
+  try {
+    const response = await axios.put(`${apiUrl}/users/update/${userId}`, {
+      username,
+      email,
+    }, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+}
+
+export const changePassword = async (
+  authToken: string,
+  userId: number,
+  currentPassword: string,
+  newPassword: string,
+) => {
+  try {
+    const response = await axios.put(`${apiUrl}/users/change-password/${userId}`, {
+      currentPassword,
+      newPassword,
+    }, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error changing password:', error);
+    throw error;
+  }
+}
+
+// export const deleteUser = async (authToken: string, userId: number) => {
+//   try {
+//     const response = await axios.delete(`${apiUrl}/users/delete/${userId}`, {
+//       headers: {
+//         Authorization: `Bearer ${authToken}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error deleting user:', error);
+//     throw error;
+//   }
+// }
+
+// export const updateUserRole = async (authToken: string, userId: number, role: 'ADMIN' | 'EDITOR' | 'USER') => {
+//   try {
+//     const response = await axios.put(`${apiUrl}/users/update-role/${userId}`, {
+//       role,
+//     }, {
+//       headers: {
+//         Authorization: `Bearer ${authToken}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error updating user role:', error);
+//     throw error;
+//   }
+// }
