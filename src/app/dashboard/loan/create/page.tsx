@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { createLoan } from '../../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 import { getAccounts } from '../../../../../utils/api';
@@ -20,7 +21,8 @@ const CreateLoanPage: React.FC = () => {
   const [accounts, setAccounts] = useState<{ account_id: number; name: string }[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<number | null>(null);
   const router = useRouter();
-  
+  const { toast } = useToast();
+
   const fetchAccounts = async () => {
     try {
       const authToken = localStorage.getItem('authToken');
@@ -64,11 +66,18 @@ const CreateLoanPage: React.FC = () => {
         console.log('Loan created successfully');
         // Additional logic or redirection after loan creation
         router.push('/dashboard/loan');
+        toast({
+          title: 'Loan added successfully',
+        });
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error creating loan:', error);
+      toast({
+        title: 'Error adding loan',
+        variant: 'destructive',
+      });
     }
   };
 

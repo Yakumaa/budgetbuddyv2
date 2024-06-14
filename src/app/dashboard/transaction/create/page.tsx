@@ -5,6 +5,7 @@ import { createTransaction } from '../../../../../utils/api';
 import { TransactionType } from '../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
@@ -22,6 +23,7 @@ const CreateTransactionPage: React.FC = () => {
   const type = searchParams.get('type');
 
   const [transactionType, setTransactionType] = useState<TransactionType>((type as TransactionType) || 'income');
+  const { toast } = useToast();
 
   const fetchAccounts = async () => {
     try {
@@ -53,11 +55,18 @@ const CreateTransactionPage: React.FC = () => {
         console.log('Transaction created successfully');
         // Additional logic or redirection after transaction creation
         router.push('/dashboard/transaction');
+        toast({
+          title: `${transactionType} added successfully`,
+        })
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error creating transaction:', error);
+      toast({
+        title: "Error creating transaction",
+        variant: "destructive"
+      })
     }
   };
 
@@ -94,6 +103,7 @@ const CreateTransactionPage: React.FC = () => {
           />
         </div>
 
+        {/* TODO: add prebuild options for category */}
         <div className="mb-4">
           <label htmlFor="category" className={`${lusitana.className} block text-gray-700 font-bold mb-2`}>
             Category

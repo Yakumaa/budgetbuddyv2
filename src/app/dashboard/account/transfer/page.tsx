@@ -5,6 +5,7 @@ import { transferBalance, getAccounts } from '../../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
 interface Account {
@@ -20,7 +21,8 @@ const TransferBalancePage: React.FC = () => {
   const [amount, setAmount] = useState(0);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const router = useRouter();
-  
+  const { toast } = useToast();
+
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
@@ -52,11 +54,18 @@ const TransferBalancePage: React.FC = () => {
           console.log('Balance transferred successfully');
           // Additional logic or redirection after balance transfer
           router.push('/dashboard/account');
+          toast({
+            title: `${amount} transferred from ${fromAccount.name} to ${toAccount.name} successfully`,
+          })
         } else {
           console.error('Authentication token not found in localStorage');
         }
       } catch (error) {
         console.error('Error transferring balance:', error);
+        toast({
+          title: "Error transferring balance",
+          variant: "destructive"
+        })
       }
     } else {
       console.error('Please select both accounts');

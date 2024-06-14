@@ -6,6 +6,7 @@ import { lusitana } from '@/components/ui/fonts';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 
 interface Asset {
@@ -26,6 +27,7 @@ const EditAssetPage: React.FC = () => {
   const [value, setValue] = useState(0);
   const [purchaseDate, setPurchaseDate] = useState('');
   const [description, setDescription] = useState('');
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchAsset = async () => {
@@ -83,11 +85,18 @@ const EditAssetPage: React.FC = () => {
           await updateAsset(authToken, asset.asset_id, name, value, formattedDate, description);
           console.log('Asset updated successfully');
           router.push('/dashboard/asset');
+          toast({
+            title: `${name} asset updated successfully`,
+          });
         } else {
           console.error('Authentication token not found in localStorage');
         }
       } catch (error) {
         console.error('Error updating asset:', error);
+        toast({
+          title: 'Error updating asset',
+          variant: 'destructive',
+        });
       }
     }
   }

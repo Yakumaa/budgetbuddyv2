@@ -7,6 +7,7 @@ import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
 import { BanknotesIcon, PlusIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Account {
   account_id: number;
@@ -24,6 +25,7 @@ interface AccountsData {
 const AccountsPage: React.FC = () => {
   const [accountsData, setAccountsData] = useState<AccountsData | null>(null);
   const [totalBalance, setTotalBalance] = useState<number | null>(null);
+  const { toast } = useToast();
 
   const fetchAccountsData = async () => {
     try {
@@ -55,11 +57,17 @@ const AccountsPage: React.FC = () => {
         await deleteAccount(authToken, accountId);
         console.log('Account deleted successfully');
         fetchAccountsData(); // Call the fetchAccountsData function to update the component state
+        toast({
+          title: "Account deleted successfully",
+        })
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error deleting account:', error);
+      toast({
+        title: "Error deleting account",
+      })
     }
   };
 
@@ -107,6 +115,7 @@ const AccountsPage: React.FC = () => {
 
       <h2 className={`${lusitana.className} text-2xl mt-8 mb-4`}>Cash Accounts</h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {/* TODO: make the cash account default */}
       {cashAccounts.map((account) => (
         <Card key={account.account_id} title={account.name} value={account.balance} type="accounts" isAccountsPage={true} accountId={account.account_id}/>
       ))}

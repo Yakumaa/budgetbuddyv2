@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { useToast } from '@/components/ui/use-toast';
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { PasswordChangeSchema } from '../../../../utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,6 +23,7 @@ const UserProfilePage = () => {
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   // const [role, setRole] = useState('');
+  const { toast } = useToast();
 
   // const {
   //   register: registerUserDetails,
@@ -75,11 +77,20 @@ const UserProfilePage = () => {
       if (authToken) {
         await updateUser(authToken, Number(userId), username, email);
         console.log('User updated successfully');
+        toast({
+          title: "User details updated",
+          description: "Your username and email have been updated successfully",
+        })
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error updating user:', error);
+      toast({
+        title: "Error updating user",
+        description: "An error occurred while updating your user details",
+        variant: "destructive"
+      })
     }
   };
 
@@ -128,11 +139,20 @@ const UserProfilePage = () => {
         await changePassword(authToken, Number(userId), data.currentPassword, data.newPassword);
         console.log('Password changed successfully');
         router.push('/dashboard/profile');
+        toast({
+          title: "Password changed",
+          description: "Your password has been successfully changed.",
+        })
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error changing password:', error);
+      toast({
+        title: "Error changing password",
+        description: "An error occurred while changing your password.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -200,8 +220,9 @@ const UserProfilePage = () => {
                 <Input
                   id="currentPassword"
                   type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  // value={currentPassword}
+                  // onChange={(e) => setCurrentPassword(e.target.value)}
+                  {...registerPasswordChange('currentPassword')}
                   required
                 />
               </div>

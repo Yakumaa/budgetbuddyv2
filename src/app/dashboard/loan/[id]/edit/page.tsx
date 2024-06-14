@@ -6,6 +6,7 @@ import { getLoan, updateLoan, getAccounts, getLoans } from '../../../../../../ut
 import { lusitana } from '@/components/ui/fonts';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 
 interface Loan {
@@ -33,6 +34,7 @@ const EditLoanPage: React.FC = () => {
   const [endDate, setEndDate] = useState('');
   const [accounts, setAccounts] = useState<{ account_id: number; name: string }[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<number | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchLoan = async () => {
@@ -115,11 +117,18 @@ const EditLoanPage: React.FC = () => {
           );
           console.log('Loan updated successfully');
           router.push('/dashboard/loan');
+          toast({
+            title: 'Loan updated successfully',
+          });
         } else {
           console.error('Authentication token not found in localStorage');
         }
       } catch (error) {
         console.error('Error updating loan:', error);
+        toast({
+          title: 'Error updating loan',
+          variant: 'destructive',
+        });
       }
     }
   };

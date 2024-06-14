@@ -7,6 +7,7 @@ import { AccountCategory } from '../../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 
 interface Account {
@@ -25,6 +26,7 @@ const EditAccountPage: React.FC = () => {
   const [name, setName] = useState('');
   const [balance, setBalance] = useState(0);
   const [category, setCategory] = useState<AccountCategory>('CASH');
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchAccount = async () => {
@@ -73,11 +75,18 @@ const EditAccountPage: React.FC = () => {
           console.log('Account updated successfully');
           // Redirect to the dashboard/account route
           router.push('/dashboard/account');
+          toast({
+            title: `${name} account updated successfully`,
+          })
         } else {
           console.error('Authentication token not found in localStorage');
         }
       } catch (error) {
         console.error('Error updating account:', error);
+        toast({
+          title: "Error updating account",
+          variant: "destructive"
+        })
       }
     }
   };

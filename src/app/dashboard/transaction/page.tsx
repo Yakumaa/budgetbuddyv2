@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getTotalIncome, getTotalExpense, getTransactions, deleteTransaction } from '../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
+import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
@@ -25,6 +26,7 @@ const TransactionsPage: React.FC = () => {
   const [transactionsData, setTransactionsData] = useState<TransactionsData | null>(null);
   const [totalIncome, setTotalIncome] = useState<number>(0);
   const [totalExpense, setTotalExpense] = useState<number>(0);
+  const { toast } = useToast();
 
   const fetchTransactionsData = async () => {
     try {
@@ -59,11 +61,18 @@ const TransactionsPage: React.FC = () => {
         await deleteTransaction(authToken, transactionId);
         console.log('Transaction deleted successfully');
         fetchTransactionsData();
+        toast({
+          title: "Transaction deleted successfully",
+        })
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error){
       console.error('Error deleting transaction:', error);
+      toast({
+        title: "Error deleting transaction",
+        variant: "destructive"
+      })
     }
   };
 

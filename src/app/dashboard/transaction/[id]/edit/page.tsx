@@ -7,6 +7,7 @@ import { TransactionType } from '../../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 import { set } from 'zod';
 
@@ -32,6 +33,7 @@ const EditTransactionPage: React.FC = () => {
   const [type, setType] = useState<TransactionType>('income');
   const [accounts, setAccounts] = useState<{ account_id: number, name: string }[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<number | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchTransaction = async () => {
@@ -98,11 +100,18 @@ const EditTransactionPage: React.FC = () => {
           await updateTransaction(authToken, transaction.transaction_id, type, amount, category, description, formattedDate, account_transactions);
           console.log('Transaction updated successfully');
           router.push('/dashboard/transaction');
+          toast({
+            title: `${type} updated successfully`,
+          })
         } else {
           console.error('Authentication token not found in localStorage');
         }
       } catch (error) {
         console.error('Error updating transaction:', error);
+        toast({
+          title: "Error updating transaction",
+          variant: "destructive"
+        })
       }
     }
   }

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { deleteLoan, getLoans } from '../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
+import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
@@ -20,6 +21,7 @@ interface Loan {
 
 const LoansPage: React.FC = () => {
   const [loans, setLoans] = useState<Loan[]>([]);
+  const { toast } = useToast();
 
   const fetchLoans = async () => {
     try {
@@ -48,11 +50,18 @@ const LoansPage: React.FC = () => {
         await deleteLoan(authToken, loanId);
         console.log('Loan deleted successfully');
         fetchLoans();
+        toast({
+          title: 'Loan deleted successfully',
+        });
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error deleting loan:', error);
+      toast({
+        title: 'Error deleting loan',
+        variant: 'destructive',
+      })
     }
   }
 
@@ -81,7 +90,7 @@ const LoansPage: React.FC = () => {
           href="/dashboard/loan/create"
           className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
-          <span className="hidden md:block">Create Loan</span>{' '}
+          <span className="hidden md:block">Add Loan</span>{' '}
           <PlusIcon className="h-5 md:ml-4" />
         </Link>
       </div>

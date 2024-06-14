@@ -5,6 +5,7 @@ import { createAccount } from '../../../../../utils/api';
 import { AccountCategory } from '../../../../../utils/validation';
 import { lusitana } from '@/components/ui/fonts';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
@@ -12,8 +13,9 @@ import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 const CreateAccountPage: React.FC = () => {
   const [name, setName] = useState('');
   const [balance, setBalance] = useState(0);
-  const [category, setCategory] = useState<AccountCategory>('BANK');
+  const [category, setCategory] = useState<AccountCategory>('CASH');
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,11 +28,18 @@ const CreateAccountPage: React.FC = () => {
         console.log('Account created successfully');
         // Additional logic or redirection after account creation
         router.push('/dashboard/account')
+        toast({
+          title: `${name} account created successfully`,
+        })
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error creating account:', error);
+      toast({
+        title: "Error creating account",
+        variant: "destructive"
+      })
     }
   };
 
@@ -88,6 +97,7 @@ const CreateAccountPage: React.FC = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           >
+            <option value="CASH">Cash</option>
             <option value="BANK">Bank</option>
             <option value="MOBILE_WALLET">Mobile Wallet</option>
           </select>

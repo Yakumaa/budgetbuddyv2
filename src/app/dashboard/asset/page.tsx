@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { deleteAsset, getAssets } from '../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Card } from '@/components/ui/dashboard/cards';
+import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
@@ -17,7 +18,7 @@ interface Asset {
 
 const AssetsPage: React.FC = () => {
   const [assets, setAssets] = useState<Asset[]>([]);
-
+  const { toast } = useToast();
   const fetchAssets = async () => {
     try {
       const authToken = localStorage.getItem('authToken');
@@ -45,11 +46,18 @@ const AssetsPage: React.FC = () => {
         await deleteAsset(authToken, assetId);
         console.log('Asset deleted successfully');
         fetchAssets();
+        toast({
+          title: 'Asset deleted successfully',
+        });
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error deleting asset:', error);
+      toast({
+        title: "Error deleting asset",
+        variant: "destructive"
+      });
     }
   
   }

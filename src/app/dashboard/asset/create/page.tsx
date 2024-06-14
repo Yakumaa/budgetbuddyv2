@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { createAsset } from '../../../../../utils/api';
 import { lusitana } from '@/components/ui/fonts';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/ui/accounts/breadcrumbs';
 import { useRouter } from 'next/navigation';
@@ -14,6 +15,7 @@ const CreateAssetPage: React.FC = () => {
   const [purchaseDate, setPurchaseDate] = useState('');
   const [description, setDescription] = useState('');
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,11 +28,18 @@ const CreateAssetPage: React.FC = () => {
         console.log('Asset created successfully');
         // Additional logic or redirection after asset creation
         router.push('/dashboard/asset');
+        toast({
+          title: `${name} asset added successfully`,
+        });
       } else {
         console.error('Authentication token not found in localStorage');
       }
     } catch (error) {
       console.error('Error creating asset:', error);
+      toast({
+        title: 'Error adding asset',
+        variant: 'destructive',
+      });
     }
   };
 
