@@ -3,7 +3,7 @@ import { PowerIcon } from '@heroicons/react/24/solid';
 import { signOut } from '../../../../utils/api';
 import { useRouter } from 'next/navigation';
 
-const SignOutForm = ({authToken}: {authToken: string}) => {
+const SignOutForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -12,8 +12,12 @@ const SignOutForm = ({authToken}: {authToken: string}) => {
     setIsLoading(true);
 
     try {
-      // await signOut(authToken);
-      router.push('/login'); 
+      const authToken = localStorage.getItem('authToken');
+      if(authToken){
+        // await signOut(authToken);
+        localStorage.removeItem('authToken');
+        router.push('/login'); 
+      }
     } catch (error) {
       console.error('Error signing out:', error);
       // Handle sign-out error

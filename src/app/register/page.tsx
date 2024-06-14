@@ -37,7 +37,7 @@ export default function Page() {
       const { username, email, password } = validatedData;
       const response = await register(username, email, password);
       console.log('Registration successful:', response);
-      router.push('/dashboard');
+      router.push('/login');
     } catch (error: any) {
       console.error('Registration error:', error);
 

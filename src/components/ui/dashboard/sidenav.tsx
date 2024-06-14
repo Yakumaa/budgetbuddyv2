@@ -28,7 +28,7 @@ export default function SideNav() {
         <NavLinks />
         <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
         {authToken && (
-          <SignOutForm authToken={authToken}/>
+          <SignOutForm />
         )}
         
       </div>
