@@ -34,14 +34,14 @@ The frontend should now be accessible at `http://localhost:3000`
 
 ## Usage
 
-1. Register a new account: Visit the registration page and create a new account by providing your username, email, and password.
-2. Log in: After registering, navigate to the login page and enter your credentials to access the application.
-3. Dashboard: Once logged in, you'll be directed to the dashboard, which provides an overview of your financial summary, including total income, expenses, net balance, and recent transactions.
-4. Add Transactions: Navigate to the transactions page to add new expenses or incomes. You can provide details such as amount, date, category, and description.
-5. Manage Accounts: Visit the accounts section to add new bank accounts or update your cash on hand.
-6. Track Loans and Assets: Record loans you've taken or assets you own by navigating to the respective sections and providing the necessary details.
-7. Generate Reports: Access the reports section to generate detailed financial reports for specific periods, allowing you to analyze your income, expenses, assets, and loans.
-8. Profile Management: Update your profile information or change your password from the profile section.
+1. **Register a new account:** Visit the registration page and create a new account by providing your username, email, and password.
+2. **Log in:** After registering, navigate to the login page and enter your credentials to access the application.
+3. **Dashboard:** Once logged in, you'll be directed to the dashboard, which provides an overview of your financial summary, including total income, expenses, net balance, and recent transactions.
+4. **Add Transactions:** Navigate to the transactions page to add new expenses or incomes. You can provide details such as amount, date, category, and description.
+5. **Manage Accounts:** Visit the accounts section to add new bank accounts or update your cash on hand.
+6. **Track Loans and Assets:** Record loans you've taken or assets you own by navigating to the respective sections and providing the necessary details.
+7. **Generate Reports:** Access the reports section to generate detailed financial reports for specific periods, allowing you to analyze your income, expenses, assets, and loans.
+8. **Profile Management:** Update your profile information or change your password from the profile section.
 
 ## Contributing
 
