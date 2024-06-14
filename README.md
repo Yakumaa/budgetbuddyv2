@@ -30,28 +30,6 @@ Create a .env file in the backend directory and configure the required environme
 npm run dev
 ```
 
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-```
-cd Blog-Posts/blogs-frontend
-```
-
-2. Install the required Node.js packages:
-```
-npm install
-```
-
-3. Create the build directory
-```
-npm run build
-```
-
-4. Start the React development server:
-```
-npm start
-```
-
 The frontend should now be accessible at `http://localhost:3000`
 
 ## Usage
