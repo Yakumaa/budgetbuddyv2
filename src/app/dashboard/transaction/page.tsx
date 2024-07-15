@@ -40,6 +40,7 @@ const TransactionsPage: React.FC = () => {
         setTotalExpense(expenseResponse);
 
         const transactionsResponse = await getTransactions(authToken);
+        console.log('Transactions data:', transactionsResponse);
         setTransactionsData(transactionsResponse);
       } else {
         console.error('Authentication token not found in localStorage');

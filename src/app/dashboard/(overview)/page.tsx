@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import CardWrapper from "@/components/ui/dashboard/cards";
+import { Component } from '@/components/ui/dashboard/graph';
 import { Suspense } from 'react';
 import { CardsSkeleton } from "@/components/ui/skeletons";
 import { lusitana } from '@/components/ui/fonts';
@@ -28,7 +29,13 @@ export default function Page() {
           )}
         </Suspense>
       </div>
-      
+
+      <div className="mt-8">
+        {authToken && (
+          <Component authToken={authToken}/>
+        )}
+      </div>
+
     </main>
     
   );
