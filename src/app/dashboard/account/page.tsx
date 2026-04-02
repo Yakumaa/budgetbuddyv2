@@ -115,7 +115,6 @@ const AccountsPage: React.FC = () => {
 
       <h2 className={`${lusitana.className} text-2xl mt-8 mb-4`}>Cash Accounts</h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {/* TODO: make the cash account default */}
       {cashAccounts.map((account) => (
         <Card key={account.account_id} title={account.name} value={account.balance} type="accounts" isAccountsPage={true} accountId={account.account_id}/>
       ))}
