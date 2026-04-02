@@ -32,6 +32,32 @@ npm run dev
 
 The frontend should now be accessible at `http://localhost:3000`
 
+5. Clone the backend repository:
+```
+git clone https://github.com/Yakumaa/budgetbuddyv2-backend.git
+```
+
+6. Install backend dependencies
+```
+pnpm install
+```
+
+7. Set up the environment variables:
+```
+Create a .env file in the backend directory and configure the required environment variables (e.g., database credentials, JWT secret keys).
+```
+
+8. Run Prisma migrations
+```
+npx prisma generate
+npx prisma db push
+```
+
+9. Start the development servers:
+```
+pnpm run dev
+```
+
 ## Usage
 
 1. **Register a new account:** Visit the registration page and create a new account by providing your username, email, and password.
