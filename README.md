@@ -2,6 +2,10 @@
 
 BudgetBuddy is a comprehensive expense tracking web application that helps users manage their personal finances effectively. With BudgetBuddy, you can track your expenses, incomes, bank accounts, loans, and assets, all in one convenient platform.
 
+## Live Demo
+
+**Try the app now:** https://budgetbuddy-coral.vercel.app
+
 ## Technologies Used
 
 - **Backend**: Nest JS
