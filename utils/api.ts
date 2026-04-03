@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { LoginInput, RegisterInput } from './validation';
 import { AccountCategory } from './validation';
 
-const apiUrl = 'http://localhost:5000';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export const signIn = async (username: string, password: string) => {
   try {
